@@ -1,0 +1,39 @@
+#map {
+    height: 300px;
+    width: 900px;;
+    position: static;
+}
+form {
+    margin-top: 20px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+.pointInput {
+    width: calc(50% - 10px);
+    padding: 5px;
+    margin-bottom: 10px;
+    float: left;
+}
+.inputContainer {
+    clear: both;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3;
+}
+button:active {
+    background-color: #0056b3;
+    transform: translateY(1px);
+}

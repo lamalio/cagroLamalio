@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcul d'aire d'un polygone</title>
+</head>
+<body>
+
+<label for="numPoints">Nombre de points:</label>
+<input type="number" id="numPoints" min="3" value="3">
+<button onclick="createPointInputs()">Créer les points</button>
+
+<div id="pointInputs"></div>
+
+<button onclick="calculateArea()">Calculer l'aire</button>
+
+<div id="result"></div>
+
+<script>
+function createPointInputs() {
+    var numPoints = parseInt(document.getElementById('numPoints').value);
+    var pointInputsDiv = document.getElementById('pointInputs');
+    pointInputsDiv.innerHTML = ''; // Clear previous inputs
+
+    if (numPoints >= 3) {
+        for (var i = 0; i < numPoints; i++) {
+            var container = document.createElement('div');
+            container.className = 'inputContainer';
+
+            var labelLat = document.createElement('label');
+            labelLat.textContent = 'Latitude:';
+            container.appendChild(labelLat);
+            var inputLat = document.createElement('input');
+            inputLat.type = 'text';
+            inputLat.className = 'pointInput latitudeInput';
+            container.appendChild(inputLat);
+
+            var labelLng = document.createElement('label');
+            labelLng.textContent = 'Longitude:';
+            container.appendChild(labelLng);
+            var inputLng = document.createElement('input');
+            inputLng.type = 'text';
+            inputLng.className = 'pointInput longitudeInput';
+            container.appendChild(inputLng);
+
+            pointInputsDiv.appendChild(container);
+        }
+    } else {
+        alert("Veuillez sélectionner au moins 3 points.");
+    }
+}
+
+function calculateArea() {
+    var latitudeInputs = document.getElementsByClassName('latitudeInput');
+    var longitudeInputs = document.getElementsByClassName('longitudeInput');
+
+    if (latitudeInputs.length !== longitudeInputs.length) {
+        alert("Le nombre de latitudes doit correspondre au nombre de longitudes.");
+        return;
+    }
+
+    var n = latitudeInputs.length;
+    var xValues = [];
+    var yValues = [];
+
+    for (var i = 0; i < n; i++) {
+        var lat = parseFloat(latitudeInputs[i].value);
+        var lng = parseFloat(longitudeInputs[i].value);
+        xValues.push(lat);
+        yValues.push(lng);
+    }
+
+    var area = 0.0;
+    for (var i = 0; i < n; i++) {
+        var j = (i + 1) % n;
+        area += xValues[i] * yValues[j];
+        area -= xValues[j] * yValues[i];
+    }
+    area = Math.abs(area) / 2.0;
+
+    document.getElementById("result").innerHTML = "Aire du polygone : " + area;
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulaire d'Élevage</title>
+</head>
+<body>
+<h2>Sélectionnez la Culture d'Élevage et son Type Correspondant</h2>
+
+<form id="cultureForm">
+    <label for="culture">Culture d'Élevage:</label>
+    <select id="culture" name="culture">
+        <option value="Bovins laitiers">Bovins laitiers</option>
+        <option value="Bovins de boucherie">Bovins de boucherie</option>
+        <option value="Bovins mixtes">Bovins mixtes</option>
+        <option value="Ovins viande">Ovins viande</option>
+        <option value="Ovins laitiers">Ovins laitiers</option>
+        <option value="Ovins à laine">Ovins à laine</option>
+        <option value="Caprins laitiers">Caprins laitiers</option>
+        <option value="Caprins viande">Caprins viande</option>
+        <option value="Caprins mixtes">Caprins mixtes</option>
+        <option value="Porcs charcutiers">Porcs charcutiers</option>
+        <option value="Porcs à l'engraissement">Porcs à l'engraissement</option>
+        <option value="Porcs reproducteurs">Porcs reproducteurs</option>
+        <option value="Poules pondeuses">Poules pondeuses</option>
+        <option value="Poulets de chair">Poulets de chair</option>
+        <option value="Autres volailles">Autres volailles (dindes, canards, oies, etc.)</option>
+        <option value="Production de miel">Production de miel</option>
+        <option value="Pollinisation des cultures">Pollinisation des cultures</option>
+        <option value="Pisciculture">Pisciculture</option>
+        <option value="Élevage de crustacés">Élevage de crustacés</option>
+        <option value="Élevage de mollusques">Élevage de mollusques</option>
+        <option value="Chevaux de selle">Chevaux de selle</option>
+        <option value="Chevaux de course">Chevaux de course</option>
+        <option value="Chevaux de trait">Chevaux de trait</option>
+        <option value="Paons">Paons</option>
+        <option value="Faisans">Faisans</option>
+        <option value="Pigeons d'ornement">Pigeons d'ornement</option>
+        <option value="Lapins de chair">Lapins de chair</option>
+        <option value="Lapins à fourrure">Lapins à fourrure</option>
+        <option value="Lapins de compagnie">Lapins de compagnie</option>
+    </select>
+</form>
+
+<form id="elvageTypeForm">
+    <label for="elvageType">Type d'Élevage:</label>
+    <select id="elvageType" name="elvageType">
+        <option value="Élevage bovin">Élevage bovin</option>
+        <option value="Élevage ovin">Élevage ovin</option>
+        <option value="Élevage caprin">Élevage caprin</option>
+        <option value="Élevage porcin">Élevage porcin</option>
+        <option value="Aviculture">Aviculture</option>
+        <option value="Apiculture">Apiculture</option>
+        <option value="Aquaculture">Aquaculture</option>
+        <option value="Élevage équin">Élevage équin</option>
+        <option value="Élevage de volailles d'ornement">Élevage de volailles d'ornement</option>
+        <option value="Élevage de lapins">Élevage de lapins</option>
+    </select>
+</form>
+
+<button onclick="submitForms()">Soumettre</button>
+
+<script>
+function submitForms() {
+    var culture = document.getElementById('culture').value;
+    var elvageType = document.getElementById('elvageType').value;
+    alert("Culture d'élevage sélectionnée: " + culture + "\nType d'élevage sélectionné: " + elvageType);
+    // Vous pouvez ajouter ici le code pour traiter les données des formulaires
+}
+</script>
+
+</body>
+</html>
