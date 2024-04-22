@@ -1,14 +1,8 @@
 <?php
-// Connexion à la base de données
-$conn = new mysqli('localhost', 'root', '', 'Titres');
-
-// Vérifier la connexion
-if ($conn->connect_error) {
-    die("Connexion échouée : " . $conn->connect_error);
-}
-$date = date("dm Y");
+require "./db.php";
+/*$date = date("dm Y");
 echo "La date d'aujourd'hui est : " . str_replace(' ', '', $date);
-echo "La date d'aujourd'hui est : " . strtotime($date . ' +15 days');
+echo "La date d'aujourd'hui est : " . strtotime($date . ' +15 days');*/
 // Récupérer les données du formulaire
 $nature = $numero = $indice = "";
 if (isset($_POST['nature'], $_POST['numero'], $_POST['indice'])) {
@@ -119,12 +113,9 @@ if (isset($_POST['submit'])) {
 
     }
 
-
-
     // Close the prepared statement
     $stmt->close();
 }
-
 
 // Fermer la connexion
 $conn->close();
@@ -148,98 +139,117 @@ $conn->close();
 </head>
 
 <body>
-    <div class=" flex space-x-4">
+    <div class=" flex space-x-4">     
+           
         <div class="w-[30%]">
             <form class="w-full border border-blue-500" action="" method="post">
                 <div>
-                    <label for="titleNumber">Numéro de titre :</label>
-                    <input type="text" id="titleNumber" name="titleNumber" required>
+                    <form action="">
+                        <label for="titleNumber">Numéro de titre :</label>
+                        <input type="text" id="titleNumber" name="titleNumber" required>
+                        <br>
+                        <label for="email">Email :</label>
+                        <input class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
+                        <!--<input type="text" id="first_name"
+class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block mx-auto p-2.5 "
+                            type="email" id="email" name="email" required>-->
+                        <br>
+                            <label for="phone">Phone :</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        <br>
+                            <label for="Nom et Prénom">Nom et Prénom :</label>
+                            <input type="text" id="Nom et Prénom" name="Nom et Prénom" required>
+                        <br>
+                            <label for="latitude">Latitude :</label>
+                            <input type="text" id="latitude" name="latitude" required>
+                        <br>
+                            <label for="longitude">Longitude :</label>
+                            <input type="text" id="longitude" name="longitude" required>
+                        <br>
+                            <button type="submit" id ="submit2" name="submit2" onclick="updateMarker()">Mettre à jour le marqueur</button><br>
+                    </form>
+                    </div>
+                <br>
+                <div>
+                    <form action="">
+                        
+                        <br>
+                        <label for="numPoints">Nombre de points :</label>
+                        <input type="number" id="numPoints" name="numPoints" min="3" max="200" placeholder="3 ou plus" required>
+                        <button type="button" onclick="createPointInputs()">Créer des points</button><br>
+                        <div id="pointInputs"></div><br>
+                        <label for="cultureType">Type de culture :</label>
+                        <select id="cultureType" name="cultureType" onchange="updateSpecificCultures()" required>
+                            <option value="cereals">Cultures céréalières</option>
+                            <option value="vegetables">Cultures maraîchères</option>
+                            <option value="fruits">Cultures fruitières</option>
+                            <option value="oleaginous">Cultures oléagineuses</option>
+                            <option value="industrial">Cultures industrielles</option>
+                            <option value="forage">Cultures fourragères</option>
+                            <option value="special">Cultures spéciales</option>
+                            <option value="Pas de Culture">Pas de culture</option>
+                        </select>
+                        <label for="specificCulture">Culture spécifique :</label>
+                        <select id="specificCulture" name="specificCulture" required>
+                            <!-- Les options spécifiques seront ajoutées dynamiquement -->
+                        </select>
+                        <br></br>
+                        <label for="elvageType">Type d'élevage :</label>
+                        <select id="elvageType" name="elvageType" onchange="updateSpecificElvages()" required>
+                            <option value="Élevage bovin">Élevage bovin</option>
+                            <option value="Élevage ovin">Élevage ovin</option>
+                            <option value="Élevage caprin">Élevage caprin</option>
+                            <option value="Élevage porcin">Élevage porcin</option>
+                            <option value="Aviculture">Aviculture</option>
+                            <option value="Apiculture">Apiculture</option>
+                            <option value="Aquaculture">Aquaculture</option>
+                            <option value="Élevage équin">Élevage équin</option>
+                            <option value="Élevage de volailles d'ornement">Élevage de volailles d'ornement</option>
+                            <option value="Élevage de lapins">Élevage de lapins</option>
+                            <option value="Pas d_Élevage">Pas d'élevage</option>
+                        </select>
+                        <label for="specificElvage">Élevage spécifique :</label>
+                        <select id="specificElvage" name="specificElvage" required>
+                            <!-- Les options spécifiques seront ajoutées dynamiquement -->
+                        </select>
+                        <br></br>
+                        <label for="irrigationType">Irrigation et drainage :</label>
+                        <select id="irrigationType" name="irrigationType" onchange="updateSpecificIrrigations()" required>
+                            <option value="Irrigation par Aspersion">Irrigation par Aspersion</option>
+                            <option value="Irrigation Goutte-à-Goutte">Irrigation Goutte-à-Goutte</option>
+                            <option value="Irrigation par Pivot Central">Irrigation par Pivot Central</option>
+                            <option value="Irrigation par Submersion ou Inondation">Irrigation par Submersion ou Inondation
+                            </option>
+                            <option value="Pas d_Irrigation">Pas d'irrigation</option>
+                        </select>
+                        <br>
+                        <button type="button" onclick="drawPolygon()">Dessiner un polygone</button>
+                        <button name="submit" type="submit" onclick="TerresAgricole()">Me enregistrer</button>
+                    </form>
                 </div>
-                <label for="email">Email :</label>
-                <input class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
-                <input type="text" id="first_name"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block mx-auto p-2.5 "
-                    type="email" id="email" name="email" required>
-                <label for="phone">Phone :</label>
-                <input type="tel" id="phone" name="phone" required>
-
-                <br>
-                <label for="latitude">Latitude :</label>
-                <input type="text" id="latitude" name="latitude" required>
-                <label for="longitude">Longitude :</label>
-                <input type="text" id="longitude" name="longitude" required>
-                <button type="button" onclick="updateMarker()">Mettre à jour le marqueur</button><br>
-                <br>
-                <label for="numPoints">Nombre de points :</label>
-                <input type="number" id="numPoints" name="numPoints" min="3" max="200" placeholder="3 ou plus" required>
-                <button type="button" onclick="createPointInputs()">Créer des points</button><br>
-                <div id="pointInputs"></div><br>
-                <label for="cultureType">Type de culture :</label>
-                <select id="cultureType" name="cultureType" onchange="updateSpecificCultures()" required>
-                    <option value="cereals">Cultures céréalières</option>
-                    <option value="vegetables">Cultures maraîchères</option>
-                    <option value="fruits">Cultures fruitières</option>
-                    <option value="oleaginous">Cultures oléagineuses</option>
-                    <option value="industrial">Cultures industrielles</option>
-                    <option value="forage">Cultures fourragères</option>
-                    <option value="special">Cultures spéciales</option>
-                    <option value="Pas de Culture">Pas de culture</option>
-                </select>
-                <label for="specificCulture">Culture spécifique :</label>
-                <select id="specificCulture" name="specificCulture" required>
-                    <!-- Les options spécifiques seront ajoutées dynamiquement -->
-                </select>
-                <br></br>
-                <label for="elvageType">Type d'élevage :</label>
-                <select id="elvageType" name="elvageType" onchange="updateSpecificElvages()" required>
-                    <option value="Élevage bovin">Élevage bovin</option>
-                    <option value="Élevage ovin">Élevage ovin</option>
-                    <option value="Élevage caprin">Élevage caprin</option>
-                    <option value="Élevage porcin">Élevage porcin</option>
-                    <option value="Aviculture">Aviculture</option>
-                    <option value="Apiculture">Apiculture</option>
-                    <option value="Aquaculture">Aquaculture</option>
-                    <option value="Élevage équin">Élevage équin</option>
-                    <option value="Élevage de volailles d'ornement">Élevage de volailles d'ornement</option>
-                    <option value="Élevage de lapins">Élevage de lapins</option>
-                    <option value="Pas d_Élevage">Pas d'élevage</option>
-                </select>
-                <label for="specificElvage">Élevage spécifique :</label>
-                <select id="specificElvage" name="specificElvage" required>
-                    <!-- Les options spécifiques seront ajoutées dynamiquement -->
-                </select>
-                <br></br>
-                <label for="irrigationType">Irrigation et drainage :</label>
-                <select id="irrigationType" name="irrigationType" onchange="updateSpecificIrrigations()" required>
-                    <option value="Irrigation par Aspersion">Irrigation par Aspersion</option>
-                    <option value="Irrigation Goutte-à-Goutte">Irrigation Goutte-à-Goutte</option>
-                    <option value="Irrigation par Pivot Central">Irrigation par Pivot Central</option>
-                    <option value="Irrigation par Submersion ou Inondation">Irrigation par Submersion ou Inondation
-                    </option>
-                    <option value="Pas d_Irrigation">Pas d'irrigation</option>
-                </select>
-                <h2>Télécharger votre CIN</h2>
-                <label for="file">Sélectionnez un fichier (jpg ou document, max. 3 Mo) :</label><br>
-                <input type="file" name="CIN" id="file" accept=".jpg,.jpeg,.doc,.docx,.pdf" required><br>
-                <!--<input type="" value="Télécharger">-->
-                <h2>Télécharger votre Bons d'achat</h2>
-                <label for="file">Sélectionnez un fichier (jpg ou document, max. 3 Mo) :</label><br>
-                <input type="file" name="Bons" id="file" accept=".jpg,.jpeg,.doc,.docx,.pdf" required><br>
-                <!--<input type="" value="Télécharger">-->
-                <br>
-                <button type="button" onclick="drawPolygon()">Dessiner un polygone</button>
-                <button name="submit" type="submit" onclick="TerresAgricole()">Me enregistrer</button>
+                <div>
+                    <form action="">
+                        <h2>Télécharger votre CIN</h2>
+                                <label for="file">Sélectionnez un fichier (jpg ou document, max. 3 Mo) :</label><br>
+                                <input type="file" name="CIN" id="file" accept=".jpg,.jpeg,.doc,.docx,.pdf" required><br>
+                                <!--<input type="" value="Télécharger">-->
+                                <h2>Télécharger votre Bons d'achat</h2>
+                                <label for="file">Sélectionnez un fichier (jpg ou document, max. 3 Mo) :</label><br>
+                                <input type="file" name="Bons" id="file" accept=".jpg,.jpeg,.doc,.docx,.pdf" required><br>
+                                <!--<input type="" value="Télécharger">-->
+                    </form>
+                
             </form>
+            
         </div>
-        <div class="w-[70%]">
-
-            <div id="surfaceOutput"></div>
-            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-            <div id="map" style="width: 100%; height: 100%;"></div>
-        <div id="map"></div>
         </div>
+                <div class="w-[70%]">
+                <div id="surfaceOutput"></div>
+                <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+                <div id="map" style="width: 100%; height: 100%;"></div>
+                <div id="map"></div>
+            </div>
     </div>
-
 
     <script>
         var map = L.map('map').setView([31.7917, -7.0926], 6); // Réglage de la vue sur le Maroc
@@ -340,12 +350,12 @@ $conn->close();
 
             var selectedCulture = document.getElementById('specificCulture').value;
             var centroid = calculateCentroid(latLngs);
-            var polygon = L.polygon(latLngs, { color: 'blue' }).addTo(map);
+            var polygon = L.polygon(latLngs, { color: 'red' }).addTo(map);
             var centroidMarker = L.marker(centroid).addTo(map);
             var titleNumber = document.getElementById('titleNumber').value; // Récupérer la valeur du numéro de titre
             centroidMarker.bindPopup("Centre de votre propriété: " + titleNumber).openPopup(); // Mettre à jour le contenu du popup
             var icon = getCultureIcon(selectedCulture);
-            L.polygon(latLngs, { color: 'blue' }).addTo(map);
+            L.polygon(latLngs, { color: 'red' }).addTo(map);
             L.marker(centroid, { icon: icon }).addTo(map);
             // Calculating the surface area of the polygon
             var area = calculateArea(latLngs);
